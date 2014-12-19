@@ -45,7 +45,7 @@ The following queries are valid for the example JSON above:
 The last query here will emit three extents, one for each of the array items in `menuitem`.
 
 ### Identity Extents
-In addition to emitting extents JsonParse can also emit identity information about the JSON object. In the example JSON text above the `menuitem` array children all have a value field. You can ask JsonParse to include information about this field in the emitted extent, for example extent 0 would contain:
+In addition to emitting extents JsonParse can also emit identity information about the JSON object. In the example JSON text above the `menuitem` array children all have a `value` field. You can ask JsonParse to include information about this field in the emitted extent, for example extent 0 would contain:
 ```
 {"value": "New", "onclick": "CreateNewDoc()"} 
 *AND*
@@ -88,4 +88,8 @@ Will yield the following output:
 Extent: {"value": "New", "onclick": "CreateNewDoc()"}, Identity: "value": "New"
 Extent: {"value": "Open", "onclick": "OpenDoc()"}, Identity: "value": "Open"
 Extent: {"value": "Close", "onclick": "CloseDoc()"}, Identity: "value": "Close"
+```
+There is also a static `Parse` method on JsonParse to simplify invokation:
+```C#
+  var extents = JsonParse.Parse(json, match, id);
 ```
