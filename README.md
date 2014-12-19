@@ -39,7 +39,9 @@ The query language is very simple, it is similar to XPath or JSONPath. It suppor
 The following queries are valid for the example JSON above:
 * "/menu"
 * "/menu/popup"
-* "/menu/popup/menuitem/[*]"
+* "/menu/popup/menuitem/[2]"
+* "/menu/popup/menuitem/*"
+
 The last query here will emit three extents, one for each of the array items in `menuitem`.
 
 ### Identity Extents
