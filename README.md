@@ -28,3 +28,23 @@ JsonParser parses the JSON data stored in a CLR string. The parser will emit `ex
 }}
 ```
 If we were interested in the `menuitem` entries then the parser would emit three extents, one for each of the menuitem[] children. Each extent would contain the start index and (string) length of the object. So extent 0 would contain `{"value": "New", "onclick": "CreateNewDoc()"}`. The extent object returned by the parser does not contain the string data itself, it only contains the indexes so emitting extents have minimal additional memory and performance overhead.
+
+The Query Language
+------------------
+The query language is very simple, it is similar to XPath or JSONPath. It supports:
+* selecting a document by name
+* selecting children of a named document
+* selecting array children by index
+The following queries are valid for the example JSON above:
+* "/menu"
+* "/menu/popup"
+* "/menu/popup/menuitem/[*]"
+The last query here will emit three extents, one for each of the array items in `menuitem`.
+
+### Identity Extents
+In addition to emitting extents JsonParse can also emit identity information about the JSON object. In the example JSON text above the `menuitem` array children all have a value field. You can ask JsonParse to include information about this field in the emitted extent, for example extent 0 would contain:
+```
+{"value": "New", "onclick": "CreateNewDoc()"} 
+*AND*
+"value": "New"
+```
