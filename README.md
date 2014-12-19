@@ -53,6 +53,7 @@ In addition to emitting extents JsonParse can also emit identity information abo
 ```
 
 ### Example Code
+The following code comes from the JsonParseExample project in this repo:
 ```C#
 using System;
 
