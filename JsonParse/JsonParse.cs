@@ -163,6 +163,13 @@ namespace RipcordSoftware.JsonParse
                 }
             }
         }
+
+        public static List<JsonExtent> Parse(string json, string match, string extentId = null)
+        {
+            var parser = new JsonParse(match, extentId);
+            parser.Parse(json);
+            return parser.MatchedExtents;
+        }
         #endregion
 
         #region Private methods
