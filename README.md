@@ -51,3 +51,40 @@ In addition to emitting extents JsonParse can also emit identity information abo
 *AND*
 "value": "New"
 ```
+
+### Example Code
+```C#
+using System;
+
+using RipcordSoftware.JsonParse;
+
+namespace JsonParseExample
+{
+    class MainClass
+    {
+        private static string json = 
+            @"{""menu"": { ""id"": ""file"", ""value"": ""File"", ""popup"": { ""menuitem"": [
+                {""value"": ""New"", ""onclick"": ""CreateNewDoc()""},
+                {""value"": ""Open"", ""onclick"": ""OpenDoc()""},
+                {""value"": ""Close"", ""onclick"": ""CloseDoc()""}
+            ]}}}";
+
+        public static void Main(string[] args)
+        {
+            var parser = new JsonParse("/menu/popup/menuitem/*", "value");
+            parser.Parse(json);
+
+            foreach (JsonIdentityExtent extent in parser.MatchedExtents)
+            {
+                Console.WriteLine("Extent: {0}, Identity: {1}", extent, extent.IdentityExent);
+            }
+        }
+    }
+}
+```
+Will yield the following output:
+```
+Extent: {"value": "New", "onclick": "CreateNewDoc()"}, Identity: "value": "New"
+Extent: {"value": "Open", "onclick": "OpenDoc()"}, Identity: "value": "Open"
+Extent: {"value": "Close", "onclick": "CloseDoc()"}, Identity: "value": "Close"
+```
