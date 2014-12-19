@@ -35,6 +35,7 @@ The query language is very simple, it is similar to XPath or JSONPath. It suppor
 * selecting a document by name
 * selecting children of a named document
 * selecting array children by index
+
 The following queries are valid for the example JSON above:
 * "/menu"
 * "/menu/popup"
