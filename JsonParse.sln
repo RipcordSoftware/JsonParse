@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonParse", "JsonParse.csproj", "{D8FC820D-4747-49FC-B0C5-8E5BC6344EA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonParse", "JsonParse\JsonParse.csproj", "{D8FC820D-4747-49FC-B0C5-8E5BC6344EA7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonParseExample", "JsonParseExample\JsonParseExample.csproj", "{275B021A-6E9C-4CD8-BFB9-3BC780004634}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7BB41527-BA8A-4D38-B7BB-6228A71C2C0C}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +24,8 @@ Global
 		{D8FC820D-4747-49FC-B0C5-8E5BC6344EA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8FC820D-4747-49FC-B0C5-8E5BC6344EA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8FC820D-4747-49FC-B0C5-8E5BC6344EA7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = JsonParseExample\JsonParseExample.csproj
