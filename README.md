@@ -27,4 +27,4 @@ JsonParser parses the JSON data stored in a CLR string. The parser will emit `ex
   }
 }}
 ```
-If we were interested in the `menuitem` entries then the parser would emit three extents, one for each of the menuitem[] children. Each extent would contain the start index and (string) length of the object. So extent 0 would contain `{"value": "New", "onclick": "CreateNewDoc()"}`.
+If we were interested in the `menuitem` entries then the parser would emit three extents, one for each of the menuitem[] children. Each extent would contain the start index and (string) length of the object. So extent 0 would contain `{"value": "New", "onclick": "CreateNewDoc()"}`. The extent object returned by the parser does not contain the string data itself, it only contains the indexes so emitting extents have minimal additional memory and performance overhead.
