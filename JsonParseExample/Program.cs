@@ -20,7 +20,7 @@ namespace JsonParseExample
 
             foreach (JsonIdentityExtent extent in parser.MatchedExtents)
             {
-                Console.WriteLine("Extent: {0}, Identity: {1}", extent, extent.IdentityExent);
+                Console.WriteLine("Extent: <{0}>, Identity: <{1}>, IdentityValue: <{2}>", extent, extent.IdentityExent, extent.Value);
             }
         }
     }
