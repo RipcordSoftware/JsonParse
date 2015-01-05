@@ -10,6 +10,7 @@ namespace JsonParseExample
             @"{""menu"": { ""id"": ""file"", ""value"": ""File"", ""popup"": { ""menuitem"": [
                 {""value"": ""New"", ""onclick"": ""CreateNewDoc()""},
                 {""value"": ""Open"", ""onclick"": ""OpenDoc()""},
+                {""onclick"": ""HelpDoc()""},
                 {""value"": ""Close"", ""onclick"": ""CloseDoc()""}
             ]}}}";
 
@@ -18,10 +19,16 @@ namespace JsonParseExample
             var parser = new JsonParse("/menu/popup/menuitem/*", "value");
             parser.Parse(json);
 
-            foreach (JsonIdentityExtent extent in parser.MatchedExtents)
+            foreach (var extent in parser.MatchedExtents)
             {
-                Console.WriteLine("Extent: <{0}>, Identity: <{1}>, IdentityValue: <{2}>", extent, extent.IdentityExent, extent.Value);
+                var identity = extent as JsonIdentityExtent;
+
+                Console.WriteLine("Extent: <{0}>, Identity: <{1}>, IdentityValue: <{2}>", 
+                    extent, identity != null ? identity.IdentityExent : "null", identity != null ? identity.Value : "null");
             }
+
+            Console.WriteLine("\nExtents found: {0}", parser.ExtentCount);
+            Console.WriteLine("Identity extents found: {0}", parser.IdentityExtentCount);
         }
     }
 }
