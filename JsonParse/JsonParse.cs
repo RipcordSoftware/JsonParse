@@ -22,7 +22,13 @@ namespace RipcordSoftware.JsonParse
             #region Public methods
             public void Push(string name)
             {
-                stack.Push(Path + "/" + name);
+                var path = Path;
+                if (path.Length > 0 && path[path.Length - 1] != '/')
+                {
+                    path += '/';
+                }
+
+                stack.Push(path + name);
             }
 
             public string Pop()
@@ -37,7 +43,7 @@ namespace RipcordSoftware.JsonParse
             #endregion
 
             #region Public properties
-            public string Path { get { return stack.Count > 0 ? stack.Peek() : string.Empty; } }
+            public string Path { get { return stack.Count > 0 ? stack.Peek() : "/"; } }
             #endregion
         }
 
@@ -155,7 +161,15 @@ namespace RipcordSoftware.JsonParse
                 switch (json[i])
                 {
                     case '{':
-                        i = ParseObject(json, i, false);
+                        var objectStartIndex = i;
+                        bool pathMatched = this.pathMatch.IsMatch("/");
+
+                        i = ParseObject(json, i, pathMatched);
+
+                        if (pathMatched)
+                        {
+                            EmitExtent(json, objectStartIndex, i);
+                        }
                         break;
                     case '[':
                         i = ParseArray(json, i);
@@ -175,6 +189,20 @@ namespace RipcordSoftware.JsonParse
         #endregion
 
         #region Private methods
+        private void EmitExtent(string json, int startIndex, int endIndex)
+        {
+            if (identityExtent != null)
+            {
+                matchedExtents.Add(new JsonIdentityExtent(json, startIndex, endIndex - startIndex, identityExtent));
+                identityExtentCount++;
+                identityExtent = null;
+            }
+            else
+            {
+                matchedExtents.Add(new JsonExtent(json, startIndex, endIndex - startIndex));
+            }
+        }
+
         private int ParseObject(string json, int offset, bool parentPathMatched)
         {
             int i = offset;
@@ -268,16 +296,7 @@ namespace RipcordSoftware.JsonParse
 
                     if (pathMatched)
                     {
-                        if (identityExtent != null)
-                        {
-                            matchedExtents.Add(new JsonIdentityExtent(json, objectStartIndex, objectEndIndex - objectStartIndex, identityExtent));
-                            identityExtentCount++;
-                            identityExtent = null;
-                        }
-                        else
-                        {
-                            matchedExtents.Add(new JsonExtent(json, objectStartIndex, objectEndIndex - objectStartIndex));
-                        }
+                        EmitExtent(json, objectStartIndex, objectEndIndex);
                     }
                     else if (parentPathMatched && string.CompareOrdinal(name, extentId) == 0)
                     {
@@ -346,16 +365,7 @@ namespace RipcordSoftware.JsonParse
 
                     if (pathMatched)
                     {
-                        if (identityExtent != null)
-                        {
-                            matchedExtents.Add(new JsonIdentityExtent(json, arrayStartIndex, arrayEndIndex - arrayStartIndex, identityExtent));
-                            identityExtentCount++;
-                            identityExtent = null;
-                        }
-                        else
-                        {
-                            matchedExtents.Add(new JsonExtent(json, arrayStartIndex, arrayEndIndex - arrayStartIndex));
-                        }
+                        EmitExtent(json, arrayStartIndex, arrayEndIndex);
                     }
                         
                     pathStack.Pop();
