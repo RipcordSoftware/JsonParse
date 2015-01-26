@@ -66,6 +66,7 @@ namespace RipcordSoftware.JsonParse
         #endregion
 
         #region Public properties
+        public int StartIndex { get { return start; } }
         public int Length { get { return length; } }
         #endregion
     }
