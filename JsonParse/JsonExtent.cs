@@ -2,7 +2,7 @@
 
 namespace RipcordSoftware.JsonParse
 {
-    public class JsonExtent
+    public class JsonExtent : IComparable<JsonExtent>
     {
         #region Protected fields
         protected readonly string json;
@@ -70,12 +70,28 @@ namespace RipcordSoftware.JsonParse
         public int EndIndex { get { return length > 0 ? (start + length - 1) : start; } }
         public int Length { get { return length; } }
         #endregion
+
+        #region IComparable implementation
+        public int CompareTo(JsonExtent other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return string.CompareOrdinal(json, start, other.json, other.start, Math.Min(length, other.length));
+            }
+        }
+        #endregion
     }
 
-    public class JsonIdentityExtent : JsonExtent
+    public class JsonIdentityExtent : JsonExtent, IComparable<JsonIdentityExtent>
     {
         #region Private fields
         private readonly JsonExtent identityExtent;
+        private readonly int valueStart;
+        private readonly int valueLength;
         private string value = null;
         #endregion
 
@@ -83,6 +99,12 @@ namespace RipcordSoftware.JsonParse
         public JsonIdentityExtent(string json, int start, int length, JsonExtent identityExtent) : base(json, start, length)
         {
             this.identityExtent = identityExtent;
+
+            var colonIndex = this.identityExtent.IndexOf(':');
+            var quoteIndex = this.identityExtent.IndexOf('"', colonIndex + 1);
+
+            valueStart = quoteIndex + 1;
+            valueLength = identityExtent.Length - valueStart - 1;
         }
         #endregion
 
@@ -95,12 +117,24 @@ namespace RipcordSoftware.JsonParse
             {
                 if (value == null)
                 {
-                    var colonIndex = identityExtent.IndexOf(':');
-                    var quoteIndex = identityExtent.IndexOf('"', colonIndex + 1);
-                    value = identityExtent.Substring(quoteIndex + 1, identityExtent.Length - quoteIndex - 1 - 1);
+                    value = identityExtent.Substring(valueStart, valueLength);
                 }
 
                 return value;
+            }
+        }
+        #endregion
+
+        #region IComparable implementation
+        public int CompareTo(JsonIdentityExtent other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return string.CompareOrdinal(base.json, start + valueStart, other.json, other.start + other.valueStart, Math.Min(valueLength, other.valueLength));
             }
         }
         #endregion
