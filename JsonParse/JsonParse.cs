@@ -482,7 +482,7 @@ namespace RipcordSoftware.JsonParse
                         i++;
                     }
 
-                    for (i++, tokenStart = i; i < length; i++)
+                    for (tokenStart = i; i < length; i++)
                     {
                         var ch = json[i];
                         if (ch < '0' || ch > '9')
