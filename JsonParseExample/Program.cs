@@ -16,7 +16,7 @@ namespace JsonParseExample
 
         public static void Main(string[] args)
         {
-            var parser = new JsonParse("/menu/popup/menuitem/*", "value");
+            var parser = new JsonParse<JsonExtent>("/menu/popup/menuitem/*", "value");
             parser.Parse(json);
 
             foreach (var extent in parser.MatchedExtents)

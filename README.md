@@ -67,29 +67,41 @@ namespace JsonParseExample
             @"{""menu"": { ""id"": ""file"", ""value"": ""File"", ""popup"": { ""menuitem"": [
                 {""value"": ""New"", ""onclick"": ""CreateNewDoc()""},
                 {""value"": ""Open"", ""onclick"": ""OpenDoc()""},
+                {""onclick"": ""HelpDoc()""},
                 {""value"": ""Close"", ""onclick"": ""CloseDoc()""}
             ]}}}";
 
         public static void Main(string[] args)
         {
-            var parser = new JsonParse("/menu/popup/menuitem/*", "value");
+            var parser = new JsonParse<JsonExtent>("/menu/popup/menuitem/*", "value");
             parser.Parse(json);
 
-            foreach (JsonIdentityExtent extent in parser.MatchedExtents)
+            foreach (var extent in parser.MatchedExtents)
             {
-                Console.WriteLine("Extent: {0}, Identity: {1}", extent, extent.IdentityExent);
+                var identity = extent as JsonIdentityExtent;
+            
+                Console.WriteLine("Extent: <{0}>, Identity: <{1}>, IdentityValue: <{2}>", 
+                    extent, identity != null ? identity.IdentityExent : "null", identity != null ? identity.Value : "null");
             }
+            
+            Console.WriteLine("\nExtents found: {0}", parser.ExtentCount);
+            Console.WriteLine("Identity extents found: {0}", parser.IdentityExtentCount);
         }
     }
 }
 ```
 Will yield the following output:
 ```
-Extent: {"value": "New", "onclick": "CreateNewDoc()"}, Identity: "value": "New"
-Extent: {"value": "Open", "onclick": "OpenDoc()"}, Identity: "value": "Open"
-Extent: {"value": "Close", "onclick": "CloseDoc()"}, Identity: "value": "Close"
+Extent: <{"value": "New", "onclick": "CreateNewDoc()"}>, Identity: <"value": "New">, IdentityValue: <New>
+Extent: <{"value": "Open", "onclick": "OpenDoc()"}>, Identity: <"value": "Open">, IdentityValue: <Open>
+Extent: <{"onclick": "HelpDoc()"}>, Identity: <null>, IdentityValue: <null>
+Extent: <{"value": "Close", "onclick": "CloseDoc()"}>, Identity: <"value": "Close">, IdentityValue: <Close>
+
+Extents found: 4
+Identity extents found: 3
+
 ```
-There is also a static `Parse` method on JsonParse to simplify invokation:
+There are also a static `Parse` method on JsonParse to simplify invokation, for example:
 ```C#
   var extents = JsonParse.Parse(json, match, id);
 ```
