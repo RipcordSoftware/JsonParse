@@ -214,6 +214,7 @@ namespace RipcordSoftware.JsonParse
         {
             int i = offset;
             int length = json.Length;
+            int fields = 0;
 
             if (json[i] != '{')
             {
@@ -233,6 +234,35 @@ namespace RipcordSoftware.JsonParse
                 }
                 else
                 {
+                    if (fields > 0)
+                    {
+                        if (json[i++] != ',')
+                        {
+                            throw new JsonParseException("Invalid object; missing field delimiter");
+                        }
+
+                        if (i == length)
+                        {
+                            throw new JsonParseException("Invalid object; unexpected end of input");
+                        }
+
+                        while (i < length && IsWhiteSpace(json[i]))
+                        {
+                            i++;
+                        }
+
+                        if (i == length)
+                        {
+                            throw new JsonParseException("Invalid object; unexpected end of input");
+                        }
+
+                        if (json[i] == '}')
+                        {
+                            i++;
+                            break;
+                        }
+                    }
+
                     var objectStartIndex = i;
 
                     JsonString name;
@@ -279,27 +309,7 @@ namespace RipcordSoftware.JsonParse
 
                     i = ParseValue(json, i, parentPathMatched);
 
-                    var objectEndIndex = i;
-
-                    while (i < length && IsWhiteSpace(json[i]))
-                    {
-                        i++;
-                    }
-
-                    if (i == length)
-                    {
-                        throw new JsonParseException("Invalid object; unexpected end of input");
-                    }
-
-                    if (json[i] == ',')
-                    {
-                        i++;
-                    }
-
-                    if (i == length)
-                    {
-                        throw new JsonParseException("Invalid object; unexpected end of input");
-                    }
+                    var objectEndIndex = i;                   
 
                     if (pathMatched)
                     {
@@ -311,6 +321,8 @@ namespace RipcordSoftware.JsonParse
                     }
 
                     pathStack.Pop();
+
+                    fields++;
                 }
             }
 
@@ -407,7 +419,7 @@ namespace RipcordSoftware.JsonParse
                 }
             }                
 
-            if (json[i] != '"')
+            if (i == json.Length)
             {
                 throw new JsonParseException("Unterminated string");
             }
