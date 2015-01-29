@@ -99,7 +99,6 @@ Extent: <{"value": "Close", "onclick": "CloseDoc()"}>, Identity: <"value": "Clos
 
 Extents found: 4
 Identity extents found: 3
-
 ```
 There are also a static `Parse` method on JsonParse to simplify invokation, for example:
 ```C#
