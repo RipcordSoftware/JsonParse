@@ -225,7 +225,6 @@ namespace RipcordSoftware.JsonParse
             {
                 if (json[i] == '}')
                 {
-                    i++;
                     break;
                 }
                 else if (IsWhiteSpace(json[i]))
@@ -326,7 +325,12 @@ namespace RipcordSoftware.JsonParse
                 }
             }
 
-            return i;
+            if (i >= length)
+            {
+                throw new JsonParseException("Invalid object; unexpected end of input");
+            }
+
+            return i + 1;
         }
 
         private int ParseArray(string json, int offset)

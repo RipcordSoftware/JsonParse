@@ -63,6 +63,14 @@ namespace JsonParseTest
             var json = "{\"x\":10, \"y\":\"abc\", \"z\":[}";
             JsonParse.Parse(json, string.Empty);
         }   
+
+        [Test()]
+        [ExpectedException(typeof(JsonParseException))]
+        public void TestMalformedJSON8()
+        {
+            var json = "{\"x\":10, \"y\":\"abc\", \"z\":\"pqr\"";
+            JsonParse.Parse(json, string.Empty);
+        }   
     }
 }
 
