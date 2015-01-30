@@ -611,7 +611,7 @@ namespace RipcordSoftware.JsonParse
 
         public static List<JsonIdentityExtent> Parse(string json, string match, string extentId)
         {
-            return JsonParse<JsonIdentityExtent>.Parse(json, match);
+            return JsonParse<JsonIdentityExtent>.Parse(json, match, extentId);
         }
     }
 }
