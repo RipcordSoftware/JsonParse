@@ -49,6 +49,21 @@ namespace JsonParseTest
             Assert.AreEqual(@"ZoomIn", extents[2].Value);
             Assert.AreEqual(@"About", extents[17].Value);
         }
+
+        [Test()]
+        public void TestExample5SelectIdentitySort()
+        {
+            var extents = JsonParse.Parse(Examples.exampleJson5, "/menu/items/*", "id");
+            extents.Sort();
+
+            Assert.AreEqual(18, extents.Count);
+            Assert.AreEqual(@"About", extents[0].Value);
+            Assert.AreEqual(@"Copy", extents[1].Value);
+            Assert.AreEqual(@"CopyAgain", extents[2].Value);
+            Assert.AreEqual(@"CopySVG", extents[3].Value);
+            Assert.AreEqual(@"Find", extents[4].Value);
+            Assert.AreEqual(@"ZoomOut", extents[17].Value);
+        }
     }
 }
 

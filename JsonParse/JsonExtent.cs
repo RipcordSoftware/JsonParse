@@ -74,14 +74,22 @@ namespace RipcordSoftware.JsonParse
         #region IComparable implementation
         public int CompareTo(JsonExtent other)
         {
+            var diff = 0;
+
             if (other == null)
             {
-                return 1;
+                diff = 1;
             }
             else
             {
-                return string.CompareOrdinal(json, start, other.json, other.start, Math.Min(length, other.length));
+                diff = string.CompareOrdinal(json, start, other.json, other.start, Math.Min(length, other.length));
+                if (diff == 0)
+                {
+                    diff = length - other.length;
+                }
             }
+
+            return diff;
         }
         #endregion
     }
@@ -128,14 +136,22 @@ namespace RipcordSoftware.JsonParse
         #region IComparable implementation
         public int CompareTo(JsonIdentityExtent other)
         {
+            var diff = 0;
+
             if (other == null)
             {
-                return 1;
+                diff = 1;
             }
             else
             {
-                return string.CompareOrdinal(base.json, start + valueStart, other.json, other.start + other.valueStart, Math.Min(valueLength, other.valueLength));
+                diff = string.CompareOrdinal(base.json, start + valueStart, other.json, other.start + other.valueStart, Math.Min(valueLength, other.valueLength));
+                if (diff == 0)
+                {
+                    diff = valueLength - other.valueLength;
+                }
             }
+
+            return diff;
         }
         #endregion
     }
