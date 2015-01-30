@@ -16,6 +16,13 @@ namespace JsonParseTest
         }
 
         [Test()]
+        public void TestEmptyArray()
+        {
+            var json = "[]";
+            JsonParse.Parse(json, string.Empty);
+        }
+
+        [Test()]
         public void TestEmptyString()
         {
             var json = "";
@@ -141,6 +148,64 @@ namespace JsonParseTest
             Assert.AreEqual(@"""a"":1", extents[0].ToString());
             Assert.AreEqual(@"""b"":2", extents[1].ToString());
             Assert.AreEqual(@"""c"":3", extents[2].ToString());
+        }
+
+        [Test()]
+        public void TestSimpleArray1()
+        {
+            var json = @"[{""a"":1,""b"":2,""c"":3}]";
+            var extents = JsonParse.Parse(json, "/[0]/*");
+            Assert.AreEqual(3, extents.Count);
+            Assert.AreEqual(@"""a"":1", extents[0].ToString());
+            Assert.AreEqual(@"""b"":2", extents[1].ToString());
+            Assert.AreEqual(@"""c"":3", extents[2].ToString());
+        }
+
+        [Test()]
+        public void TestSimpleArray2()
+        {
+            var json = @"[{""c"":3,""b"":2,""a"":1}]";
+            var extents = JsonParse.Parse(json, "/[0]/*");
+            Assert.AreEqual(3, extents.Count);
+            Assert.AreEqual(@"""c"":3", extents[0].ToString());
+            Assert.AreEqual(@"""b"":2", extents[1].ToString());
+            Assert.AreEqual(@"""a"":1", extents[2].ToString());
+        }
+
+        [Test()]
+        public void TestSimpleArray3()
+        {
+            var json = @"[0,1,2,3,4,5,6,7,8,9]";
+            var extents = JsonParse.Parse(json, "/*");
+            Assert.AreEqual(10, extents.Count);
+            Assert.AreEqual(@"0", extents[0].ToString());
+            Assert.AreEqual(@"1", extents[1].ToString());
+            Assert.AreEqual(@"2", extents[2].ToString());
+            Assert.AreEqual(@"9", extents[9].ToString());
+        }
+
+        [Test()]
+        public void TestSimpleArray4()
+        {
+            var json = @"[9,8,7,6,5,4,3,2,1,0]";
+            var extents = JsonParse.Parse(json, "/*");
+            Assert.AreEqual(10, extents.Count);
+            Assert.AreEqual(@"9", extents[0].ToString());
+            Assert.AreEqual(@"8", extents[1].ToString());
+            Assert.AreEqual(@"7", extents[2].ToString());
+            Assert.AreEqual(@"0", extents[9].ToString());
+        }
+
+        [Test()]
+        public void TestSimpleArray5()
+        {
+            var json = @"[{""abc"":123},8,7,6,5,4,3,2,1,{""pi"":3.14}]";
+            var extents = JsonParse.Parse(json, "/*");
+            Assert.AreEqual(10, extents.Count);
+            Assert.AreEqual(@"{""abc"":123}", extents[0].ToString());
+            Assert.AreEqual(@"8", extents[1].ToString());
+            Assert.AreEqual(@"7", extents[2].ToString());
+            Assert.AreEqual(@"{""pi"":3.14}", extents[9].ToString());
         }
 
         [Test()]
