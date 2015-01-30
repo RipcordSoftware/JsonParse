@@ -114,7 +114,7 @@ namespace JsonParseTest
         public void TestSimpleObject9()
         {
             var json = @"{""child"":[1,2,3]}";
-            var extents = JsonParse.Parse(json, "/child/[*]");
+            var extents = JsonParse.Parse(json, "/child/*");
             Assert.AreEqual(3, extents.Count);
             Assert.AreEqual(@"1", extents[0].ToString());
             Assert.AreEqual(@"2", extents[1].ToString());
@@ -125,7 +125,7 @@ namespace JsonParseTest
         public void TestSimpleObject10()
         {
             var json = @"{""child"":[[1,2,3]]}";
-            var extents = JsonParse.Parse(json, "/child/[0]/[*]");
+            var extents = JsonParse.Parse(json, "/child/[0]/*");
             Assert.AreEqual(3, extents.Count);
             Assert.AreEqual(@"1", extents[0].ToString());
             Assert.AreEqual(@"2", extents[1].ToString());

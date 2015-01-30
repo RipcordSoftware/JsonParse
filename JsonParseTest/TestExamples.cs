@@ -37,6 +37,18 @@ namespace JsonParseTest
         {
             JsonParse.Parse(Examples.exampleJson5, string.Empty);
         }
+
+        [Test()]
+        public void TestExample5SelectIdentity()
+        {
+            var extents = JsonParse.Parse(Examples.exampleJson5, "/menu/items/*", "id");
+            Assert.AreEqual(18, extents.Count);
+            Assert.AreEqual(@"{""id"": ""Open""}", extents[0].ToString());
+            Assert.AreEqual(@"Open", extents[0].Value);
+            Assert.AreEqual(@"OpenNew", extents[1].Value);
+            Assert.AreEqual(@"ZoomIn", extents[2].Value);
+            Assert.AreEqual(@"About", extents[17].Value);
+        }
     }
 }
 
